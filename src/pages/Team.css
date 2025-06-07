@@ -1,7 +1,11 @@
 .team-page {
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(180deg, var(--bg-primary-start) 0%, var(--bg-primary-end) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--bg-primary-start) 0%,
+    var(--bg-primary-end) 100%
+  );
   display: flex;
   flex-direction: column;
   position: relative;
@@ -57,7 +61,11 @@
   margin: 0;
   font-size: 2.5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--text-primary), var(--accent-purple));
+  background: linear-gradient(
+    135deg,
+    var(--text-primary),
+    var(--accent-purple)
+  );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -77,6 +85,7 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  padding-bottom: 8rem;
   overflow-y: auto;
 }
 
@@ -126,7 +135,7 @@
   .team-cards-container {
     gap: 1.5rem;
   }
-  
+
   .team-card-wrapper {
     min-width: 280px;
     max-width: 350px;
@@ -136,23 +145,24 @@
 @media (max-width: 992px) {
   .team-content {
     padding: 1.5rem;
+    padding-bottom: 7rem;
   }
-  
+
   .team-cards-container {
     flex-direction: column;
     gap: 2rem;
     align-items: center;
   }
-  
+
   .team-card-wrapper {
     min-width: 320px;
     max-width: 400px;
   }
-  
+
   .team-header-content h1 {
     font-size: 2rem;
   }
-  
+
   .team-header-content p {
     font-size: 1rem;
   }
@@ -164,27 +174,28 @@
     gap: 1rem;
     padding: 1rem;
   }
-  
+
   .team-header-content {
     margin: 0;
   }
-  
+
   .team-header-content h1 {
     font-size: 1.75rem;
   }
-  
+
   .team-header-content p {
     font-size: 0.9rem;
   }
-  
+
   .team-content {
     padding: 1rem;
+    padding-bottom: 6rem;
   }
-  
+
   .team-cards-container {
     gap: 1.5rem;
   }
-  
+
   .team-card-wrapper {
     min-width: 280px;
     max-width: 350px;
@@ -195,24 +206,24 @@
   .team-header {
     padding: 0.75rem;
   }
-  
+
   .team-header-content h1 {
     font-size: 1.5rem;
   }
-  
+
   .team-header-content p {
     font-size: 0.85rem;
   }
-  
+
   .team-content {
     padding: 0.75rem;
   }
-  
+
   .team-card-wrapper {
     min-width: 260px;
     max-width: 320px;
   }
-  
+
   .back-button {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
@@ -238,4 +249,4 @@
   bottom: 0.5rem;
   left: 50%;
   transform: translateX(-50%);
-} 
+}

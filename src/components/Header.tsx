@@ -23,10 +23,14 @@ const Header: React.FC<HeaderProps> = ({ onWalletConnect }) => {
   return (
     <header className="app-header">
       <div className="header-content">
-        {/* Left side - Hero icon */}
+        {/* Left side - Hero icon and brand */}
         <div className="header-left">
           <div className="hero-icon">
             <img src="/icon.png" alt="XRPL Icon" className="icon-image" />
+          </div>
+          <div className="brand-text">
+            <span className="brand-name">AgentFlow</span>
+            <span className="brand-tech">XRPL</span>
           </div>
         </div>
 

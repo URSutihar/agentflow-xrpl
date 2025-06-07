@@ -544,27 +544,167 @@ const WorkflowBuilder: React.FC = () => {
     }
 
     try {
-      console.log('Sending workflow deployment request:', workflow);
+      // Enhanced debug statements for deployment
+      const endpoint = 'http://localhost:8000/workflow/setup';
+      const method = 'POST';
+      const headers = {
+        'Content-Type': 'application/json',
+      };
       
-      const response = await fetch('http://localhost:8000/workflow', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(workflow)
+      // Wrap workflow array in sequence object as expected by backend
+      const payload = {
+        sequence: workflow
+      };
+      
+      console.log('🚀 DEPLOY BUTTON CLICKED - Starting deployment process...');
+      console.log('📍 Endpoint:', endpoint);
+      console.log('🔧 Method:', method);
+      console.log('📋 Headers:', headers);
+      console.log('📦 Payload (complete):', JSON.stringify(payload, null, 2));
+      console.log('📦 Workflow array:', JSON.stringify(workflow, null, 2));
+      console.log('📊 Workflow summary:', {
+        totalNodes: workflow.length,
+        nodeTypes: workflow.map(node => node.type),
+        hasUIForm: workflow.some(node => node.type === 'ui_form'),
+        hasIdentityVerification: workflow.some(node => node.type === 'did_verification'),
+        hasEscrowAccount: workflow.some(node => node.type === 'escrow_accounts'),
+        hasTransactionMonitoring: workflow.some(node => node.type === 'summarization')
+      });
+      
+      console.log('Sending workflow deployment request with sequence wrapper...');
+      
+      const response = await fetch(endpoint, {
+        method,
+        headers,
+        body: JSON.stringify(payload)
+      });
+
+      console.log('📡 Response received:', {
+        status: response.status,
+        statusText: response.statusText,
+        ok: response.ok,
+        headers: Object.fromEntries(response.headers.entries())
       });
 
       if (response.ok) {
         const result = await response.json();
-        console.log('Workflow deployment successful:', result);
-        showModal(`Workflow deployed successfully!\n\nDeployed ${workflow.length} node(s):\n${workflow.map((node, index) => `${index + 1}. ${node.type}`).join('\n')}`, 'Deployment Successful', 'success');
+        console.log('✅ Workflow deployment successful:', result);
+        
+        // Extract redirect URL from response
+        const redirectUrl = result.redirect_url;
+        const workflowDetails = result.workflow_details || {};
+        
+        console.log('🔗 Redirect URL:', redirectUrl);
+        console.log('📋 Workflow Details:', workflowDetails);
+        
+        // Create success message with clickable redirect URL
+        let successMessage = `Workflow deployed successfully!\n\nDeployed ${workflow.length} node(s):\n${workflow.map((node, index) => `${index + 1}. ${node.type}`).join('\n')}`;
+        
+        if (redirectUrl) {
+          successMessage += `\n\n🚀 Your application is ready!\nClick the link below to open it:\n\n${redirectUrl}`;
+        }
+        
+        if (workflowDetails.total_steps) {
+          successMessage += `\n\nWorkflow Details:\n• Total Steps: ${workflowDetails.total_steps}\n• Current Step: ${workflowDetails.current_step || 'Starting'}`;
+        }
+        
+        showModal(
+          <div style={{ textAlign: 'left' }}>
+            <p style={{ marginBottom: '16px', color: '#10b981', fontWeight: '600' }}>
+              ✅ Workflow deployed successfully!
+            </p>
+            <div style={{ marginBottom: '16px' }}>
+              <strong>Deployed {workflow.length} node(s):</strong>
+              <ul style={{ marginLeft: '20px', marginTop: '8px' }}>
+                {workflow.map((node, index) => (
+                  <li key={index} style={{ marginBottom: '4px' }}>
+                    {index + 1}. {node.type}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            {redirectUrl && (
+              <div style={{ 
+                marginBottom: '16px', 
+                padding: '12px', 
+                background: 'rgba(16, 185, 129, 0.1)', 
+                border: '1px solid rgba(16, 185, 129, 0.3)', 
+                borderRadius: '8px' 
+              }}>
+                <p style={{ marginBottom: '8px', fontWeight: '600', color: '#10b981' }}>
+                  🚀 Your application is ready!
+                </p>
+                <p style={{ marginBottom: '8px', fontSize: '14px', color: 'var(--text-secondary)' }}>
+                  Click the link below to open your deployed workflow:
+                </p>
+                <button
+                  onClick={() => {
+                    console.log('🔗 Opening redirect URL:', redirectUrl);
+                    window.open(redirectUrl, '_blank', 'noopener,noreferrer');
+                  }}
+                  style={{
+                    background: '#10b981',
+                    color: 'white',
+                    border: 'none',
+                    padding: '8px 16px',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    textDecoration: 'none',
+                    display: 'inline-block',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#059669';
+                    e.currentTarget.style.transform = 'translateY(-1px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = '#10b981';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
+                >
+                  🌐 Open Application
+                </button>
+                <div style={{ marginTop: '8px', fontSize: '12px', color: 'var(--text-secondary)', wordBreak: 'break-all' }}>
+                  {redirectUrl}
+                </div>
+              </div>
+            )}
+            
+            {workflowDetails.total_steps && (
+              <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+                <strong>Workflow Details:</strong>
+                <ul style={{ marginLeft: '20px', marginTop: '4px' }}>
+                  <li>Total Steps: {workflowDetails.total_steps}</li>
+                  <li>Current Step: {workflowDetails.current_step || 'Starting'}</li>
+                  {workflowDetails.step_types && (
+                    <li>Step Types: {workflowDetails.step_types.join(', ')}</li>
+                  )}
+                </ul>
+              </div>
+            )}
+          </div>,
+          'Deployment Successful', 
+          'success'
+        );
       } else {
         const errorText = await response.text();
-        console.error('Workflow deployment failed:', response.status, errorText);
+        console.error('❌ Workflow deployment failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          errorText: errorText
+        });
                   showModal(`Deployment failed: ${response.status} ${response.statusText}\n${errorText}`, 'Deployment Failed', 'error');
       }
     } catch (error) {
-      console.error('Error during workflow deployment:', error);
+      console.error('💥 Error during workflow deployment:', error);
+      console.error('🔍 Error details:', {
+        name: error instanceof Error ? error.name : 'Unknown',
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined
+      });
               showModal(`Deployment error: ${error instanceof Error ? error.message : 'Unknown error'}`, 'Deployment Error', 'error');
     }
   }, [nodes, getFormFields]);

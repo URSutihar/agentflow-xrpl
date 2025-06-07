@@ -1,20 +1,20 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { VscHome, VscArchive, VscCode, VscCloud, VscGraph } from 'react-icons/vsc';
+import { VscHome, VscArchive, VscCode, VscGraph } from 'react-icons/vsc';
 import { FiSun, FiMoon, FiUsers } from 'react-icons/fi';
-import Dock from '../components/Dock';
 import Header from '../components/Header';
 import CardSwap, { Card } from '../components/CardSwap';
 import Modal from '../components/Modal';
+import Dock from '../components/Dock';
 import type { DockItemData } from '../components/Dock';
-import { useTheme } from '../hooks/useTheme';
 import { useModal } from '../hooks/useModal';
+import { useTheme } from '../hooks/useTheme';
 import './LandingPage.css';
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
-  const { isDarkMode, toggleTheme } = useTheme();
   const { modal, showModal, hideModal } = useModal();
+  const { isDarkMode, toggleTheme } = useTheme();
 
   const handleWalletConnect = () => {
     // Handle wallet connection logic here
@@ -25,7 +25,7 @@ const LandingPage: React.FC = () => {
     { 
       icon: <VscHome size={18} />, 
       label: 'Home', 
-      onClick: () => {} 
+      onClick: () => navigate('/') 
     },
     { 
       icon: <VscCode size={18} />, 
@@ -49,8 +49,8 @@ const LandingPage: React.FC = () => {
     },
     // Separator
     { 
-      icon: null,  
-      label: '',
+      icon: null, 
+      label: '', 
       onClick: () => {},
       isSeparator: true
     },
@@ -67,52 +67,65 @@ const LandingPage: React.FC = () => {
       <Header onWalletConnect={handleWalletConnect} />
       
       <div className="landing-content">
-        {/* Hero section on the left */}
+        {/* Hero section - moved to left */}
         <div className="hero-section">
-          <div className="hero-brand">Agentflow XRPL</div>
           <div className="hero-title">
-            POWERING THE AUTONOMOUS AI ECONOMY
+            DEMOCRATIZING THE AUTONOMOUS AI ECONOMY
           </div>
-          <button className="cta-button" onClick={() => navigate('/workflow-builder')}>
-            Build your AI
-          </button>
+          <div className="hero-subtitle">
+            The <strong>visual workflow builder</strong> where XRPL automations become <strong>accessible financial services</strong> for everyone
+          </div>
+          <div className="hero-description">
+            Build autonomous AI agents that deliver impact solutions like microfinancing, crypto lending, and payment solutions for underserved communities. 
+            Our platform makes complex XRPL workflows accessible to anyone—creating <strong>financial inclusion through technology</strong>.
+          </div>
+          <div className="hero-actions">
+            <button className="cta-button primary" onClick={() => navigate('/workflow-builder')}>
+              Build Financial Solutions
+            </button>
+            <button className="cta-button secondary" onClick={() => navigate('/projects')}>
+              See Impact Examples
+            </button>
+          </div>
         </div>
         
-        {/* Card Swap Component - positioned on the right side */}
+        {/* Card Swap Component - repositioned */}
         <div className="card-swap-wrapper">
           <CardSwap
-            cardDistance={80}
-            verticalDistance={90}
-            delay={5000}
+            cardDistance={60}
+            verticalDistance={70}
+            delay={2500}
             pauseOnHover={true}
           >
             <Card>
-              <h3>🔗 Visual Workflows</h3>
-              <p>Drag-and-drop interface to build complex XRPL automations without coding. Connect nodes to create powerful workflows.</p>
+              <h3>🌍 Financial Inclusion</h3>
+              <p>Deploy microfinance and payment solutions that reach the 1.4 billion unbanked worldwide using XRPL's low-cost infrastructure.</p>
             </Card>
             <Card>
-              <h3>💰 DeFi Integration</h3>
-              <p>Seamlessly integrate with XRPL's native DeFi features including escrow accounts, multi-signature transactions, and automated payments.</p>
+              <h3>💡 AI-Powered Access</h3>
+              <p>Intelligent workflows that adapt to local needs, from micro-lending algorithms to automated savings programs for emerging markets.</p>
             </Card>
             <Card>
-              <h3>🔐 Identity Verification</h3>
-              <p>Built-in DID verification system for secure user authentication and wallet ownership validation on XRPL network.</p>
+              <h3>⚡ Instant Deployment</h3>
+              <p>Launch financial services in minutes, not months. Our visual builder makes complex XRPL automations accessible to anyone.</p>
             </Card>
             <Card>
-              <h3>📊 Smart Analytics</h3>
-              <p>Real-time transaction monitoring with AI-powered insights using advanced LLM providers for intelligent reporting.</p>
+              <h3>🤝 Community Impact</h3>
+              <p>Create transparent, traceable financial solutions that build trust and deliver measurable social impact in underserved communities.</p>
             </Card>
           </CardSwap>
         </div>
       </div>
       
-      {/* Dock positioned at bottom */}
-      <Dock 
-        items={dockItems}
-        panelHeight={68}
-        baseItemSize={50}
-        magnification={70}
-      />
+      {/* Floating Dock */}
+      <div className="floating-dock">
+        <Dock 
+          items={dockItems}
+          panelHeight={68}
+          baseItemSize={50}
+          magnification={70}
+        />
+      </div>
       
       {/* Modal */}
       <Modal

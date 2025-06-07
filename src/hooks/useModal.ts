@@ -3,7 +3,7 @@ import { useState } from 'react';
 interface ModalState {
   isOpen: boolean;
   title?: string;
-  message: string;
+  message: React.ReactNode;
   type?: 'info' | 'success' | 'warning' | 'error';
 }
 
@@ -16,7 +16,7 @@ export const useModal = () => {
   });
 
   const showModal = (
-    message: string, 
+    message: React.ReactNode, 
     title?: string, 
     type: 'info' | 'success' | 'warning' | 'error' = 'info'
   ) => {
