@@ -1,0 +1,241 @@
+.team-page {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(180deg, var(--bg-primary-start) 0%, var(--bg-primary-end) 100%);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Header with glassmorphism */
+.team-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  background: rgba(26, 26, 46, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.team-header:hover {
+  background: rgba(26, 26, 46, 0.8);
+  border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+
+.back-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-primary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.team-header-content {
+  flex: 1;
+  text-align: center;
+  margin: 0 2rem;
+}
+
+.team-header-content h1 {
+  color: var(--text-primary);
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--text-primary), var(--accent-purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.team-header-content p {
+  color: var(--text-secondary);
+  margin: 0.5rem 0 0 0;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Team content */
+.team-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.team-cards-container {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  max-width: 1400px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.team-card-wrapper {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Light theme styles */
+:root.light-theme .team-header {
+  background: rgba(255, 255, 255, 0.7);
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+
+:root.light-theme .team-header:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-bottom-color: rgba(0, 0, 0, 0.15);
+}
+
+:root.light-theme .back-button {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: var(--text-primary);
+}
+
+:root.light-theme .back-button:hover {
+  background: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .team-cards-container {
+    gap: 1.5rem;
+  }
+  
+  .team-card-wrapper {
+    min-width: 280px;
+    max-width: 350px;
+  }
+}
+
+@media (max-width: 992px) {
+  .team-content {
+    padding: 1.5rem;
+  }
+  
+  .team-cards-container {
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+  }
+  
+  .team-card-wrapper {
+    min-width: 320px;
+    max-width: 400px;
+  }
+  
+  .team-header-content h1 {
+    font-size: 2rem;
+  }
+  
+  .team-header-content p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .team-header {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .team-header-content {
+    margin: 0;
+  }
+  
+  .team-header-content h1 {
+    font-size: 1.75rem;
+  }
+  
+  .team-header-content p {
+    font-size: 0.9rem;
+  }
+  
+  .team-content {
+    padding: 1rem;
+  }
+  
+  .team-cards-container {
+    gap: 1.5rem;
+  }
+  
+  .team-card-wrapper {
+    min-width: 280px;
+    max-width: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  .team-header {
+    padding: 0.75rem;
+  }
+  
+  .team-header-content h1 {
+    font-size: 1.5rem;
+  }
+  
+  .team-header-content p {
+    font-size: 0.85rem;
+  }
+  
+  .team-content {
+    padding: 0.75rem;
+  }
+  
+  .team-card-wrapper {
+    min-width: 260px;
+    max-width: 320px;
+  }
+  
+  .back-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Floating Dock */
+.floating-dock {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.floating-dock .dock-outer {
+  pointer-events: auto;
+}
+
+.floating-dock .dock-panel {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+} 

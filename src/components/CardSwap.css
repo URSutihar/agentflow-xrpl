@@ -1,0 +1,124 @@
+.card-swap-wrapper {
+  position: fixed;
+  top: 65%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 600px;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.card-swap-container {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  perspective: 1200px;
+  overflow: visible;
+  pointer-events: auto;
+}
+
+.card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 420px;
+  height: 280px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(6, 6, 6, 0.85);
+  backdrop-filter: blur(25px);
+  color: var(--text-primary, #ffffff);
+  padding: 2rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+
+  transform-style: preserve-3d;
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  background: rgba(6, 6, 6, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+}
+
+.card h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #7affed, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card p {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.8));
+  line-height: 1.5;
+}
+
+@media (max-width: 1200px) {
+  .card-swap-wrapper {
+    width: 500px;
+    height: 400px;
+  }
+  
+  .card {
+    width: 360px;
+    height: 240px;
+    padding: 1.75rem;
+  }
+  
+  .card h3 {
+    font-size: 1.2rem;
+  }
+  
+  .card p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-swap-wrapper {
+    width: 400px;
+    height: 350px;
+    padding: 1rem;
+    top: 60%;
+  }
+  
+  .card {
+    width: 300px;
+    height: 200px;
+    padding: 1.5rem;
+  }
+  
+  .card h3 {
+    font-size: 1.1rem;
+  }
+  
+  .card p {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-swap-wrapper {
+    width: 320px;
+    height: 300px;
+    top: 55%;
+  }
+  
+  .card {
+    width: 260px;
+    height: 180px;
+    padding: 1.25rem;
+  }
+} 

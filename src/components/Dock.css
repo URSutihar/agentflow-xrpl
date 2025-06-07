@@ -1,0 +1,121 @@
+.dock-outer {
+  margin: 0 0.5rem;
+  display: flex;
+  max-width: 100%;
+  align-items: center;
+}
+
+.dock-panel {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: flex-end;
+  width: fit-content;
+  gap: 1rem;
+  border-radius: 1rem;
+  background-color: rgba(6, 6, 6, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0 0.5rem 0.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Light theme dock */
+:root.light-theme .dock-panel {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.dock-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background-color: rgba(26, 26, 46, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+/* Light theme dock items */
+:root.light-theme .dock-item {
+  background-color: rgba(248, 250, 252, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dock-item:hover {
+  background-color: rgba(154, 77, 255, 0.2);
+  border-color: var(--accent-purple);
+}
+
+.dock-item:focus {
+  background-color: rgba(122, 255, 237, 0.2);
+  border-color: var(--accent-green);
+}
+
+.dock-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+}
+
+.dock-label {
+  position: absolute;
+  top: -1.5rem;
+  left: 50%;
+  width: fit-content;
+  white-space: pre;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(6, 6, 6, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-primary);
+  transform: translateX(-50%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Light theme dock labels */
+:root.light-theme .dock-label {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Separator line styling */
+.dock-separator-line {
+  width: 1px;
+  height: 30px;
+  background-color: var(--text-secondary);
+  opacity: 0.3;
+  align-self: center;
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+:root.light-theme .dock-separator-line {
+  background-color: var(--text-secondary);
+  opacity: 0.4;
+}
+
+/* Legacy separator styling (for compatibility) */
+.dock-separator {
+  cursor: default !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.dock-separator:hover {
+  background-color: transparent !important;
+  border: none !important;
+} 

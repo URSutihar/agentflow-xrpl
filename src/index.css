@@ -1,0 +1,58 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  background-attachment: fixed;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  background-attachment: fixed;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100vw;
+}
+
+body {
+  color: #ffffff;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* CSS Variables for Design System */
+:root {
+  --bg-primary-start: #1a1a2e;
+  --bg-primary-end: #16213e;
+  --text-primary: #ffffff;
+  --text-secondary: #e4e4e4;
+  --accent-green: #2c3e50;
+  --accent-purple: #9a4dff;
+}
+
+/* Light Theme */
+:root.light-theme {
+  --bg-primary-start: #f8fafc;
+  --bg-primary-end: #e2e8f0;
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --accent-green: #34495e;
+  --accent-purple: #805ad5;
+}
+
+/* Ensure full height gradient */
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--bg-primary-start) 0%, var(--bg-primary-end) 100%);
+} 
