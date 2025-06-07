@@ -1,0 +1,20 @@
+{
+  "yuv2bindal@gmail.com": {
+    "name": "",
+    "email": "yuv2bindal@gmail.com",
+    "wallet_address": "rsAievSV26WYo5KLSBwBQDyMb9tUSBbtdD",
+    "timestamp": "2025-06-07T23:49:42.057114+00:00",
+    "first_name": "Yuv",
+    "last_name": "Bindal",
+    "loan_amount": "5",
+    "annual_income": "32000",
+    "graduate_level": "No",
+    "verification_tokens": [
+      {
+        "token": "0bcf6b8c12239ce929717d3267875ca5",
+        "status": "approved",
+        "updated_at": "2025-06-07T23:50:33.041147+00:00"
+      }
+    ]
+  }
+}

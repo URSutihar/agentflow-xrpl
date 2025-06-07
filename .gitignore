@@ -139,9 +139,6 @@ pids/
 *.pid.lock
 
 # Project specific
-backend/current_cached_user_data.json
-backend/email_verifications.json
-backend/templates/
 
 # Temporary files
 *.tmp

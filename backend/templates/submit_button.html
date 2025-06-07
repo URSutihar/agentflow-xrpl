@@ -1,0 +1,524 @@
+<!-- Reusable Submit Button Component -->
+<!-- Usage: Include this component and replace {{api_endpoint}} with your desired API URL -->
+<div class="submit-group">
+    <button type="submit" class="submit-button" data-api-endpoint="{{api_endpoint|default:'/api/submit'}}" data-method="{{method|default:'POST'}}">
+        <span class="button-content">
+            <span class="button-icon">{{icon|default:'📤'}}</span>
+            <span class="button-text">{{button_text|default:'Submit'}}</span>
+        </span>
+        <span class="loading-spinner" style="display: none;">
+            <span class="spinner"></span>
+            <span class="loading-text">{{loading_text|default:'Processing...'}}</span>
+        </span>
+    </button>
+    <div class="submit-feedback"></div>
+</div>
+
+<style>
+.submit-group {
+    position: relative;
+    margin: 25px 0;
+    width: 100%;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 15px 25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    min-height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+}
+
+.submit-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+}
+
+.submit-button:focus {
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.4);
+}
+
+.submit-button:disabled {
+    background: #cbd5e0;
+    color: #a0aec0;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.button-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.button-icon {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.submit-button:hover .button-icon {
+    transform: scale(1.1);
+}
+
+.button-text {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.loading-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit;
+    border-radius: inherit;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.submit-feedback {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.submit-feedback.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.submit-feedback.success {
+    background: #e8f5e8;
+    color: #2e7d32;
+    border: 1px solid #4caf50;
+}
+
+.submit-feedback.error {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #f44336;
+}
+
+.submit-feedback.info {
+    background: #e3f2fd;
+    color: #1565c0;
+    border: 1px solid #2196f3;
+}
+
+/* Success state */
+.submit-button.success {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+}
+
+.submit-button.success:hover {
+    background: linear-gradient(135deg, #45a049, #3d8b40);
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+}
+
+/* Error state */
+.submit-button.error {
+    background: linear-gradient(135deg, #ff5722, #d84315);
+}
+
+.submit-button.error:hover {
+    background: linear-gradient(135deg, #d84315, #bf360c);
+    box-shadow: 0 8px 25px rgba(255, 87, 34, 0.3);
+}
+
+/* Pulse effect for loading */
+.submit-button.loading {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
+    }
+}
+
+/* Ripple effect */
+.submit-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: all 0.6s ease;
+}
+
+.submit-button:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .submit-button {
+        padding: 12px 20px;
+        font-size: 1rem;
+        min-height: 50px;
+    }
+    
+    .button-icon {
+        font-size: 1.1rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .submit-button:disabled {
+        background: #4a5568;
+        color: #718096;
+    }
+    
+    .submit-feedback.success {
+        background: #1a2e1a;
+        color: #68d391;
+        border-color: #38a169;
+    }
+    
+    .submit-feedback.error {
+        background: #2d1b1b;
+        color: #fc8181;
+        border-color: #e53e3e;
+    }
+    
+    .submit-feedback.info {
+        background: #1a2332;
+        color: #63b3ed;
+        border-color: #3182ce;
+    }
+}
+
+/* Animation effects */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.submit-group {
+    animation: slideUp 0.5s ease-out;
+}
+
+/* Special button variants */
+.submit-button.primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.submit-button.success-variant {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+}
+
+.submit-button.danger {
+    background: linear-gradient(135deg, #ff5722, #d84315);
+}
+
+.submit-button.warning {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+}
+
+.submit-button.info {
+    background: linear-gradient(135deg, #2196f3, #1976d2);
+}
+</style>
+
+<script>
+// Enhanced functionality for the submit button component
+document.addEventListener('DOMContentLoaded', function() {
+    const submitButtons = document.querySelectorAll('.submit-button');
+    
+    submitButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            handleSubmit(this);
+        });
+    });
+});
+
+async function handleSubmit(button) {
+    const apiEndpoint = button.getAttribute('data-api-endpoint');
+    const method = button.getAttribute('data-method') || 'POST';
+    const feedback = button.closest('.submit-group').querySelector('.submit-feedback');
+    
+    // Prevent multiple submissions
+    if (button.disabled) return;
+    
+    try {
+        // Set loading state
+        setButtonState(button, 'loading');
+        
+        // Collect form data if button is inside a form
+        const form = button.closest('form');
+        const formData = form ? new FormData(form) : new FormData();
+        
+        // Convert FormData to JSON for most APIs
+        const data = {};
+        for (let [key, value] of formData.entries()) {
+            data[key] = value;
+        }
+        
+        // Prepare request options
+        const requestOptions = {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        };
+        
+        // Add body for POST/PUT requests
+        if (method !== 'GET' && method !== 'DELETE') {
+            requestOptions.body = JSON.stringify(data);
+        }
+        
+        // Add CSRF token if available
+        const csrfToken = document.querySelector('meta[name="csrf-token"]');
+        if (csrfToken) {
+            requestOptions.headers['X-CSRF-Token'] = csrfToken.getAttribute('content');
+        }
+        
+        // Make the API call
+        const response = await fetch(apiEndpoint, requestOptions);
+        const result = await response.json();
+        
+        if (response.ok) {
+            // Success
+            setButtonState(button, 'success');
+            showFeedback(feedback, 'success', result.message || 'Operation completed successfully!');
+            
+            // Optional: Redirect or trigger callback
+            if (result.redirect) {
+                setTimeout(() => {
+                    window.location.href = result.redirect;
+                }, 1500);
+            }
+            
+            // Trigger custom success event
+            button.dispatchEvent(new CustomEvent('submitSuccess', { 
+                detail: { response: result, button: button } 
+            }));
+            
+        } else {
+            // Error response
+            throw new Error(result.message || `Server error: ${response.status}`);
+        }
+        
+    } catch (error) {
+        // Handle errors
+        setButtonState(button, 'error');
+        showFeedback(feedback, 'error', error.message || 'An error occurred. Please try again.');
+        
+        // Trigger custom error event
+        button.dispatchEvent(new CustomEvent('submitError', { 
+            detail: { error: error, button: button } 
+        }));
+        
+        console.error('Submit error:', error);
+    }
+    
+    // Reset button state after delay
+    setTimeout(() => {
+        resetButtonState(button);
+    }, 3000);
+}
+
+function setButtonState(button, state) {
+    const buttonContent = button.querySelector('.button-content');
+    const loadingSpinner = button.querySelector('.loading-spinner');
+    
+    // Reset classes
+    button.classList.remove('loading', 'success', 'error');
+    
+    switch (state) {
+        case 'loading':
+            button.disabled = true;
+            button.classList.add('loading');
+            buttonContent.style.display = 'none';
+            loadingSpinner.style.display = 'flex';
+            break;
+            
+        case 'success':
+            button.disabled = false;
+            button.classList.add('success');
+            buttonContent.style.display = 'flex';
+            loadingSpinner.style.display = 'none';
+            
+            // Update button text temporarily
+            const buttonText = button.querySelector('.button-text');
+            const buttonIcon = button.querySelector('.button-icon');
+            const originalText = buttonText.textContent;
+            const originalIcon = buttonIcon.textContent;
+            
+            buttonText.textContent = 'Success!';
+            buttonIcon.textContent = '✅';
+            
+            // Store original values for reset
+            button.dataset.originalText = originalText;
+            button.dataset.originalIcon = originalIcon;
+            break;
+            
+        case 'error':
+            button.disabled = false;
+            button.classList.add('error');
+            buttonContent.style.display = 'flex';
+            loadingSpinner.style.display = 'none';
+            
+            // Update button text temporarily
+            const errorButtonText = button.querySelector('.button-text');
+            const errorButtonIcon = button.querySelector('.button-icon');
+            const originalErrorText = errorButtonText.textContent;
+            const originalErrorIcon = errorButtonIcon.textContent;
+            
+            errorButtonText.textContent = 'Error';
+            errorButtonIcon.textContent = '❌';
+            
+            // Store original values for reset
+            button.dataset.originalText = originalErrorText;
+            button.dataset.originalIcon = originalErrorIcon;
+            break;
+    }
+}
+
+function resetButtonState(button) {
+    const buttonText = button.querySelector('.button-text');
+    const buttonIcon = button.querySelector('.button-icon');
+    const buttonContent = button.querySelector('.button-content');
+    const loadingSpinner = button.querySelector('.loading-spinner');
+    
+    // Reset classes
+    button.classList.remove('loading', 'success', 'error');
+    button.disabled = false;
+    
+    // Reset content visibility
+    buttonContent.style.display = 'flex';
+    loadingSpinner.style.display = 'none';
+    
+    // Restore original text and icon
+    if (button.dataset.originalText) {
+        buttonText.textContent = button.dataset.originalText;
+        delete button.dataset.originalText;
+    }
+    
+    if (button.dataset.originalIcon) {
+        buttonIcon.textContent = button.dataset.originalIcon;
+        delete button.dataset.originalIcon;
+    }
+}
+
+function showFeedback(feedbackElement, type, message) {
+    if (!feedbackElement) return;
+    
+    // Reset classes
+    feedbackElement.classList.remove('show', 'success', 'error', 'info');
+    
+    // Set new state
+    feedbackElement.classList.add('show', type);
+    feedbackElement.textContent = message;
+    
+    // Auto-hide after delay
+    setTimeout(() => {
+        feedbackElement.classList.remove('show');
+    }, 5000);
+}
+
+// Utility function to validate form before submission
+function validateForm(form) {
+    if (!form) return true;
+    
+    const requiredFields = form.querySelectorAll('[required]');
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            field.classList.add('error');
+            isValid = false;
+        } else {
+            field.classList.remove('error');
+        }
+    });
+    
+    return isValid;
+}
+
+// Global function to manually trigger submit
+window.triggerSubmit = function(buttonId) {
+    const button = document.getElementById(buttonId);
+    if (button) {
+        handleSubmit(button);
+    }
+};
+
+// Global function to update button endpoint
+window.updateButtonEndpoint = function(buttonId, newEndpoint) {
+    const button = document.getElementById(buttonId);
+    if (button) {
+        button.setAttribute('data-api-endpoint', newEndpoint);
+    }
+};
+</script> 
