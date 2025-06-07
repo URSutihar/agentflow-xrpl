@@ -204,12 +204,14 @@ const MarketData: React.FC = () => {
         <div className="loading-spinner">Loading market data...</div>
         
         {/* Dock positioned at bottom */}
-        <Dock 
-          items={dockItems}
-          panelHeight={68}
-          baseItemSize={50}
-          magnification={70}
-        />
+        <div className="floating-dock">
+          <Dock 
+            items={dockItems}
+            panelHeight={68}
+            baseItemSize={50}
+            magnification={70}
+          />
+        </div>
       </div>
     );
   }
@@ -231,12 +233,14 @@ const MarketData: React.FC = () => {
         </div>
         
         {/* Dock positioned at bottom */}
-        <Dock 
-          items={dockItems}
-          panelHeight={68}
-          baseItemSize={50}
-          magnification={70}
-        />
+        <div className="floating-dock">
+          <Dock 
+            items={dockItems}
+            panelHeight={68}
+            baseItemSize={50}
+            magnification={70}
+          />
+        </div>
       </div>
     );
   }
@@ -342,12 +346,14 @@ const MarketData: React.FC = () => {
       </div>
 
       {/* Dock positioned at bottom */}
-      <Dock 
-        items={dockItems}
-        panelHeight={68}
-        baseItemSize={50}
-        magnification={70}
-      />
+      <div className="floating-dock">
+        <Dock 
+          items={dockItems}
+          panelHeight={68}
+          baseItemSize={50}
+          magnification={70}
+        />
+      </div>
     </div>
   );
 };

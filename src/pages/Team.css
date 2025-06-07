@@ -229,24 +229,3 @@
     font-size: 0.9rem;
   }
 }
-
-/* Floating Dock */
-.floating-dock {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  pointer-events: none;
-}
-
-.floating-dock .dock-outer {
-  pointer-events: auto;
-}
-
-.floating-dock .dock-panel {
-  position: absolute;
-  bottom: 0.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-}

@@ -203,12 +203,14 @@ const Projects: React.FC = () => {
       </div>
 
       {/* Dock positioned at bottom */}
-      <Dock 
-        items={dockItems}
-        panelHeight={68}
-        baseItemSize={50}
-        magnification={70}
-      />
+      <div className="floating-dock">
+        <Dock 
+          items={dockItems}
+          panelHeight={68}
+          baseItemSize={50}
+          magnification={70}
+        />
+      </div>
     </div>
   );
 };
