@@ -111,24 +111,35 @@ graph TB
     end
 
     %% Frontend to Backend Communication
-    A --> H: "POST /workflow/setup"
-    C --> H: "GET /workflow/display"
-    D --> H: "Real-time Configuration"
+    A --> H
+    C --> H
+    D --> H
 
     %% Backend to XRPL Communication
-    J --> Q: "DID Challenge/Response"
-    K --> R: "Escrow Creation/Release"
-    L --> V: "PREIMAGESHA256 Conditions"
+    J --> Q
+    K --> R
+    L --> V
 
     %% External Service Integration
-    L --> U: "Approval Email Triggers"
-    S --> W: "Wallet Ownership Verification"
-    R --> P: "Blockchain Transactions"
+    L --> U
+    S --> W
+    R --> P
 
     %% Data Flow
-    F -.-> N: "Cache Sync"
-    E -.-> I: "Validation Rules"
-    M --> C: "Dynamic UI Generation"
+    F -.-> N
+    E -.-> I
+    M --> C
+
+    %% Labels
+    A -.->|Workflow Setup| H
+    C -.->|Display Request| H
+    D -.->|Configuration| H
+    J -.->|DID Challenges| Q
+    K -.->|Escrow Operations| R
+    L -.->|Crypto Conditions| V
+    L -.->|Email Triggers| U
+    S -.->|Wallet Verification| W
+    R -.->|Transactions| P
 ```
 
 ### Component Interaction Flow
