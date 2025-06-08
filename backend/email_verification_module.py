@@ -13,6 +13,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 from xrpl.wallet import Wallet
 
+load_dotenv()
+
 # Import escrow module for integration
 try:
     from .escrow_module import (
