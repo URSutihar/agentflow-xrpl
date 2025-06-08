@@ -535,14 +535,40 @@ AgentFlow XRPL addresses **massive global challenges** with proven scalability:
 
 ## 🖼️ Screenshots
 
-_This section will contain screenshots of the application UI showing:_
+### ReactFlow Visual Whiteboard Interface
 
-- _ReactFlow visual whiteboard interface with drag-and-drop workflow building_
+![AgentFlow XRPL Visual Workflow Builder](screenshots/Screenshot%202025-06-07%20at%2010.57.01%20PM.png)
+
+**Featured: Interactive ReactFlow Canvas with XRPL Financial Workflow**
+
+This screenshot demonstrates our core innovation - the **ReactFlow-powered whiteboard interface** that transforms complex XRPL financial programming into an intuitive visual experience:
+
+**Key Features Shown:**
+
+- **Drag-and-Drop Workflow Design**: Visual nodes representing different financial service components
+- **Real-Time Validation**: Live feedback as users connect workflow steps
+- **XRPL Integration Nodes**: Custom components for DID verification, escrow creation, and email approval
+- **Interactive Configuration**: Each node can be clicked to configure XRPL parameters
+- **Professional UI/UX**: Clean, modern interface designed for both technical and non-technical users
+
+**Innovation Highlight**: This visual approach makes sophisticated XRPL financial programming accessible to anyone, regardless of technical background - democratizing blockchain finance development.
+
+---
+
+### Additional Interface Screenshots
+
+![AgentFlow XRPL Application Preview](preview.png)
+
+**Application Overview & Dashboard Interface**
+
+_Additional screenshots showcasing:_
+
 - _Custom ReactFlow nodes for XRPL financial services (DID, Escrow, Email approval)_
-- _Interactive ReactFlow canvas with real-time workflow validation_
 - _Node configuration panels integrated with ReactFlow whiteboard_
 - _Live workflow execution visualization on the ReactFlow canvas_
 - _ReactFlow-to-JSON export functionality demonstrating workflow conversion_
+- _Real-time transaction monitoring dashboard_
+- _Mobile-responsive design across different devices_
 
 ## 📺 Technical Video
 
