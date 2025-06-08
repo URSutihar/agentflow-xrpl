@@ -76,7 +76,13 @@ function DockItem({
     [-distance, 0, distance],
     [baseItemSize, magnification, baseItemSize]
   );
-  const size = useSpring(targetSize, spring);
+  
+  // Use more stable spring configuration with rest thresholds
+  const size = useSpring(targetSize, {
+    ...spring,
+    restDelta: 0.01,
+    restSpeed: 0.01,
+  });
 
   return (
     <motion.div
@@ -84,6 +90,10 @@ function DockItem({
       style={{
         width: size,
         height: size,
+        // Optimize for GPU rendering
+        willChange: 'width, height',
+        backfaceVisibility: 'hidden',
+        transformOrigin: 'center bottom',
       }}
       onHoverStart={() => isHovered.set(1)}
       onHoverEnd={() => isHovered.set(0)}
@@ -150,7 +160,7 @@ function DockIcon({ children, className = "" }: DockIconProps) {
 export default function Dock({
   items,
   className = "",
-  spring = { mass: 0.1, stiffness: 150, damping: 12 },
+  spring = { mass: 0.15, stiffness: 120, damping: 20 },
   magnification = 70,
   distance = 200,
   panelHeight = 68,
@@ -164,8 +174,16 @@ export default function Dock({
     () => Math.max(dockHeight, magnification + magnification / 2 + 4),
     [magnification, dockHeight]
   );
+
+  // Use more stable spring configuration for height
   const heightRow = useTransform(isHovered, [0, 1], [panelHeight, maxHeight]);
-  const height = useSpring(heightRow, spring);
+  const height = useSpring(heightRow, { 
+    mass: 0.2, 
+    stiffness: 100, 
+    damping: 25,
+    restDelta: 0.01,
+    restSpeed: 0.01 
+  });
 
   return (
     <motion.div
