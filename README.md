@@ -8,6 +8,27 @@ Develops AI agents workflow automation platform to develop financially inclusive
 
 **[Watch the Demo](https://youtu.be/gdbAB1lSQJI)**
 
+## 📺 **Technical Walkthrough Video (Detailed)**
+
+[![AgentFlow XRPL Technical Walkthrough](https://img.youtube.com/vi/pDMY1VfQujg/0.jpg)](https://www.youtube.com/watch?v=pDMY1VfQujg)
+
+**[🔧 Watch Complete Technical Walkthrough & Codebase Analysis](https://www.youtube.com/watch?v=pDMY1VfQujg)**
+
+This comprehensive technical video demonstrates:
+
+- **Complete codebase walkthrough** showing custom XRPL implementation
+- **GitHub repository structure** with detailed explanation of each module
+- **Live demonstration** of all features working end-to-end on XRPL Testnet
+- **ReactFlow whiteboard** functionality and custom node implementation
+- **XRPL integration details** including DID verification and conditional escrow
+- **Security considerations** and cryptographic implementations
+- **Email approval system** with PREIMAGESHA256 condition mapping
+- **Real blockchain transactions** and their execution flow
+- **Backend architecture** including AI agents and workflow orchestration
+- **How conditional escrow and DID verification work** at the code level
+
+_This video provides judges with an in-depth understanding of our custom implementation, demonstrating that this is original work built specifically for XRPL, not adapted from existing projects._
+
 ## 📋 Table of Contents
 
 - [Project Overview](#project-overview)
@@ -525,13 +546,24 @@ _This section will contain screenshots of the application UI showing:_
 
 ## 📺 Technical Video
 
-_This section will contain a detailed technical video explaining:_
+[![AgentFlow XRPL Technical Walkthrough](https://img.youtube.com/vi/pDMY1VfQujg/0.jpg)](https://www.youtube.com/watch?v=pDMY1VfQujg)
 
-- _Complete codebase walkthrough demonstrating custom implementation_
-- _GitHub repository structure showing original development_
-- _Live demonstration of all features working end-to-end_
-- _XRPL integration details and security considerations_
-- _How conditional escrow and DID verification work at the code level_
+**[🔧 Complete Technical Walkthrough & Codebase Analysis](https://www.youtube.com/watch?v=pDMY1VfQujg)**
+
+This comprehensive technical video demonstrates:
+
+- **Complete codebase walkthrough** showing custom XRPL implementation
+- **GitHub repository structure** with detailed explanation of each module
+- **Live demonstration** of all features working end-to-end on XRPL Testnet
+- **ReactFlow whiteboard** functionality and custom node implementation
+- **XRPL integration details** including DID verification and conditional escrow
+- **Security considerations** and cryptographic implementations
+- **Email approval system** with PREIMAGESHA256 condition mapping
+- **Real blockchain transactions** and their execution flow
+- **Backend architecture** including AI agents and workflow orchestration
+- **How conditional escrow and DID verification work** at the code level
+
+_This video provides judges with an in-depth understanding of our custom implementation, demonstrating that this is original work built specifically for XRPL, not adapted from existing projects._
 
 ## 🔗 Blockchain Transactions
 
