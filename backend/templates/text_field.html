@@ -1,0 +1,262 @@
+<!-- Reusable Text Field Component -->
+<!-- Usage: Include this component and replace {{label}} with your desired placeholder text -->
+<div class="form-group">
+    <label class="field-label">{{label}}</label>
+    <input type="text" class="text-field" placeholder="{{label}}" id="{{field_id|default:'textField'}}" name="{{field_name|default:'textField'}}">
+    <div class="field-underline"></div>
+</div>
+
+<style>
+.form-group {
+    position: relative;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.field-label {
+    display: block;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+}
+
+.text-field {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    font-size: 1rem;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    outline: none;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+.text-field:focus {
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+}
+
+.text-field:focus + .field-underline {
+    transform: scaleX(1);
+}
+
+.text-field:hover {
+    border-color: #c3c9d4;
+    background: white;
+}
+
+.field-underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    border-radius: 1px;
+}
+
+.text-field.error {
+    border-color: #ff5722;
+    background: #ffebee;
+}
+
+.text-field.success {
+    border-color: #4CAF50;
+    background: #e8f5e8;
+}
+
+/* Floating label effect */
+.form-group.floating .field-label {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    color: #999;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    background: transparent;
+    padding: 0 5px;
+}
+
+.form-group.floating .text-field:focus + .field-underline + .field-label,
+.form-group.floating .text-field:not(:placeholder-shown) + .field-underline + .field-label {
+    top: 0;
+    font-size: 0.85rem;
+    color: #667eea;
+    background: white;
+}
+
+/* Animation effects */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-group {
+    animation: slideIn 0.5s ease-out;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .text-field {
+        padding: 12px 16px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .field-label {
+        font-size: 0.9rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .text-field {
+        background: #2d3748;
+        border-color: #4a5568;
+        color: #e2e8f0;
+    }
+    
+    .field-label {
+        color: #a0aec0;
+    }
+    
+    .text-field:focus {
+        background: #1a202c;
+        border-color: #667eea;
+    }
+}
+</style>
+
+<script>
+// Enhanced functionality for the text field component
+document.addEventListener('DOMContentLoaded', function() {
+    const textFields = document.querySelectorAll('.text-field');
+    
+    textFields.forEach(field => {
+        // Add validation on blur
+        field.addEventListener('blur', function() {
+            validateField(this);
+        });
+        
+        // Add real-time character count if maxlength is set
+        if (field.hasAttribute('maxlength')) {
+            addCharacterCounter(field);
+        }
+        
+        // Add floating label support
+        if (field.closest('.form-group').classList.contains('floating')) {
+            setupFloatingLabel(field);
+        }
+    });
+});
+
+function validateField(field) {
+    const value = field.value.trim();
+    const isRequired = field.hasAttribute('required');
+    const minLength = field.getAttribute('minlength');
+    const pattern = field.getAttribute('pattern');
+    
+    // Reset classes
+    field.classList.remove('error', 'success');
+    
+    // Required validation
+    if (isRequired && !value) {
+        field.classList.add('error');
+        showFieldError(field, 'This field is required');
+        return false;
+    }
+    
+    // Min length validation
+    if (minLength && value.length < parseInt(minLength)) {
+        field.classList.add('error');
+        showFieldError(field, `Minimum ${minLength} characters required`);
+        return false;
+    }
+    
+    // Pattern validation
+    if (pattern && value && !new RegExp(pattern).test(value)) {
+        field.classList.add('error');
+        showFieldError(field, 'Invalid format');
+        return false;
+    }
+    
+    // Success state
+    if (value) {
+        field.classList.add('success');
+        hideFieldError(field);
+    }
+    
+    return true;
+}
+
+function showFieldError(field, message) {
+    // Remove existing error message
+    hideFieldError(field);
+    
+    // Create error message element
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'field-error';
+    errorDiv.textContent = message;
+    errorDiv.style.cssText = `
+        color: #ff5722;
+        font-size: 0.85rem;
+        margin-top: 5px;
+        animation: slideIn 0.3s ease-out;
+    `;
+    
+    field.parentNode.appendChild(errorDiv);
+}
+
+function hideFieldError(field) {
+    const errorDiv = field.parentNode.querySelector('.field-error');
+    if (errorDiv) {
+        errorDiv.remove();
+    }
+}
+
+function addCharacterCounter(field) {
+    const maxLength = parseInt(field.getAttribute('maxlength'));
+    const counter = document.createElement('div');
+    counter.className = 'character-counter';
+    counter.style.cssText = `
+        text-align: right;
+        font-size: 0.8rem;
+        color: #999;
+        margin-top: 5px;
+    `;
+    
+    function updateCounter() {
+        const remaining = maxLength - field.value.length;
+        counter.textContent = `${field.value.length}/${maxLength}`;
+        counter.style.color = remaining < 10 ? '#ff5722' : '#999';
+    }
+    
+    field.addEventListener('input', updateCounter);
+    field.parentNode.appendChild(counter);
+    updateCounter();
+}
+
+function setupFloatingLabel(field) {
+    const formGroup = field.closest('.form-group');
+    const label = formGroup.querySelector('.field-label');
+    
+    if (label) {
+        // Move label after input for CSS sibling selector
+        field.parentNode.insertBefore(label, field.nextSibling);
+    }
+}
+</script> 

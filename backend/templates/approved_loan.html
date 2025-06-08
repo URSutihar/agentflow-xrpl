@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Approved - XRPL Microfinance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            max-width: 600px;
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            animation: bounce 1s ease-out;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .loan-details {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-left: 5px solid #4CAF50;
+        }
+
+        .loan-details h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .detail-value {
+            font-weight: 500;
+            color: #333;
+            font-family: 'Courier New', monospace;
+            background: #e3f2fd;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .amount-highlight {
+            background: #4CAF50 !important;
+            color: white !important;
+            font-size: 1.1rem !important;
+            font-weight: bold !important;
+        }
+
+        .info-section {
+            background: #e3f2fd;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #bbdefb;
+        }
+
+        .info-section h3 {
+            color: #1976d2;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-section p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .timeline {
+            background: #fff3e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #ffcc02;
+        }
+
+        .timeline h3 {
+            color: #f57c00;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 10px 0;
+            padding: 8px 0;
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4CAF50;
+        }
+
+        .timeline-dot.pending {
+            background: #ffc107;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 25px 30px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .footer p {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .contact-info {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            display: inline-block;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .transaction-hash {
+            word-break: break-all;
+            font-size: 0.8rem !important;
+            background: #e8f5e8 !important;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+
+            .detail-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="success-icon">✅</div>
+            <h1>Loan Approved!</h1>
+            <p>Your microfinance loan has been successfully approved and funds released</p>
+        </div>
+
+        <div class="content">
+            <div class="loan-details">
+                <h2>📋 Loan Details</h2>
+                <div class="detail-row">
+                    <span class="detail-label">Loan Amount:</span>
+                    <span class="detail-value amount-highlight">{{amount_xrp}} XRP</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Application ID:</span>
+                    <span class="detail-value">{{application_id}}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Escrow ID:</span>
+                    <span class="detail-value">{{escrow_id}}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Recipient Address:</span>
+                    <span class="detail-value">{{recipient_address}}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Transaction Hash:</span>
+                    <span class="detail-value transaction-hash">{{transaction_hash}}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Approved At:</span>
+                    <span class="detail-value">{{approved_at}}</span>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>ℹ️ What Happens Next</h3>
+                <p>• <strong>Funds Released:</strong> The {{amount_xrp}} XRP has been transferred to the recipient's wallet</p>
+                <p>• <strong>Transaction Recorded:</strong> This approval is permanently recorded on the XRPL blockchain</p>
+                <p>• <strong>Confirmation:</strong> The borrower will receive notification of the approved loan</p>
+            </div>
+
+            <div class="timeline">
+                <h3>🕐 Loan Timeline</h3>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span>Application Submitted</span>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span>Escrow Created</span>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span>Approval Email Sent</span>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span><strong>✅ Loan Approved & Funds Released</strong></span>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot pending"></div>
+                    <span>Repayment Period Begins</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Thank you for participating in our XRPL-based microfinance program. Your approval helps provide financial access to those who need it most.</p>
+            
+            <div class="contact-info">
+                <strong>📞 Support Contact:</strong><br>
+                Email: support@xrplmicrofinance.com<br>
+                Network: XRPL Testnet
+            </div>
+
+            <a href="#" class="btn" onclick="window.close()">Close Window</a>
+        </div>
+    </div>
+
+    <script>
+        // Auto-refresh transaction status if needed
+        setTimeout(() => {
+            console.log('Loan approval page loaded successfully');
+        }, 1000);
+
+        // Copy transaction hash functionality
+        document.querySelector('.transaction-hash').addEventListener('click', function() {
+            const hash = this.textContent;
+            navigator.clipboard.writeText(hash).then(() => {
+                this.style.background = '#4CAF50';
+                this.style.color = 'white';
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.style.background = '#e8f5e8';
+                    this.style.color = '#333';
+                    this.textContent = hash;
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

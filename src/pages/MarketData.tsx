@@ -39,8 +39,11 @@ const MarketData: React.FC = () => {
   const navigate = useNavigate();
   const { isDarkMode, toggleTheme } = useTheme();
 
-  // RLUSD issuer address (you may need to update this with the actual RLUSD issuer)
-  const RLUSD_ISSUER = "rLUSDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"; // Replace with actual RLUSD issuer
+  // Real RLUSD issuer address from Ripple
+  const RLUSD_ISSUER = "rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De"; // Official RLUSD issuer
+  
+  // Backup USD issuer (Bitstamp USD) as fallback
+  const USD_ISSUER = "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B"; // Bitstamp USD
 
   const dockItems: DockItemData[] = [
     { 
@@ -87,69 +90,116 @@ const MarketData: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      // Fetch buy orders (XRP → RLUSD)
-      const buyOrdersRequest = {
-        method: "book_offers",
-        params: [{
-          taker_gets: {
-            currency: "RLUSD",
-            issuer: RLUSD_ISSUER
-          },
-          taker_pays: {
-            currency: "XRP"
-          },
-          limit: 20
-        }]
-      };
+      // Try RLUSD first, fallback to USD if not available
+      const currencies = [
+        { currency: "RLUSD", issuer: RLUSD_ISSUER, name: "RLUSD" },
+        { currency: "USD", issuer: USD_ISSUER, name: "USD" }
+      ];
 
-      // Fetch sell orders (RLUSD → XRP)
-      const sellOrdersRequest = {
-        method: "book_offers",
-        params: [{
-          taker_gets: {
-            currency: "XRP"
-          },
-          taker_pays: {
-            currency: "RLUSD",
-            issuer: RLUSD_ISSUER
-          },
-          limit: 20
-        }]
-      };
+      let successfulFetch = false;
 
-      // Make parallel API calls to XRPL public servers
-      const [buyResponse, sellResponse] = await Promise.all([
-        fetch('https://xrplcluster.com/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(buyOrdersRequest)
-        }),
-        fetch('https://xrplcluster.com/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(sellOrdersRequest)
-        })
-      ]);
+      for (const curr of currencies) {
+        try {
+          // Fetch buy orders (XRP → Currency)
+          const buyOrdersRequest = {
+            method: "book_offers",
+            params: [{
+              taker_gets: {
+                currency: curr.currency,
+                issuer: curr.issuer
+              },
+              taker_pays: "XRP",
+              limit: 20
+            }]
+          };
 
-      const buyData: BookOffersResponse = await buyResponse.json();
-      const sellData: BookOffersResponse = await sellResponse.json();
+          // Fetch sell orders (Currency → XRP)
+          const sellOrdersRequest = {
+            method: "book_offers", 
+            params: [{
+              taker_gets: "XRP",
+              taker_pays: {
+                currency: curr.currency,
+                issuer: curr.issuer
+              },
+              limit: 20
+            }]
+          };
 
-      setBuyOffers(buyData.result.offers || []);
-      setSellOffers(sellData.result.offers || []);
+          // Use multiple XRPL public servers with fallback
+          const endpoints = [
+            'https://xrplcluster.com/',
+            'https://s1.ripple.com:51234/',
+            'https://s2.ripple.com:51234/'
+          ];
 
-      // Calculate current price from best offer
-      if (buyData.result.offers && buyData.result.offers.length > 0) {
-        const bestOffer = buyData.result.offers[0];
-        setCurrentPrice(parseFloat(bestOffer.quality));
+          let buyData, sellData;
+
+          for (const endpoint of endpoints) {
+            try {
+              const [buyResponse, sellResponse] = await Promise.all([
+                fetch(endpoint, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(buyOrdersRequest)
+                }),
+                fetch(endpoint, {
+                  method: 'POST', 
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(sellOrdersRequest)
+                })
+              ]);
+
+              if (buyResponse.ok && sellResponse.ok) {
+                buyData = await buyResponse.json();
+                sellData = await sellResponse.json();
+                
+                // Check if we got valid responses
+                if (buyData?.result && sellData?.result) {
+                  setBuyOffers(buyData.result.offers || []);
+                  setSellOffers(sellData.result.offers || []);
+
+                  // Calculate current price from best offer
+                  if (buyData.result.offers && buyData.result.offers.length > 0) {
+                    const bestOffer = buyData.result.offers[0];
+                    setCurrentPrice(parseFloat(bestOffer.quality));
+                  }
+
+                  successfulFetch = true;
+                  console.log(`Successfully fetched ${curr.name} market data from ${endpoint}`);
+                  break;
+                }
+              }
+            } catch (endpointError) {
+              console.warn(`Failed to fetch from ${endpoint}:`, endpointError);
+              continue;
+            }
+          }
+
+          if (successfulFetch) break;
+
+        } catch (currencyError) {
+          console.warn(`Failed to fetch ${curr.name} data:`, currencyError);
+          continue;
+        }
+      }
+
+      if (!successfulFetch) {
+        throw new Error('Unable to fetch market data from any source');
       }
 
     } catch (err) {
-      setError('Failed to fetch market data. Please try again.');
+      setError('Failed to fetch market data. The XRP Ledger might be experiencing issues or the trading pair may not be available.');
       console.error('Error fetching market data:', err);
+      
+      // Set empty data on error
+      setBuyOffers([]);
+      setSellOffers([]);
+      setCurrentPrice(null);
     } finally {
       setLoading(false);
     }
@@ -199,7 +249,7 @@ const MarketData: React.FC = () => {
           <button onClick={() => navigate('/')} className="back-button">
             ← Back to Home
           </button>
-          <h1>XRP/RLUSD Market Data</h1>
+          <h1>XRP/USD Market Data</h1>
         </div>
         <div className="loading-spinner">Loading market data...</div>
         
@@ -223,7 +273,7 @@ const MarketData: React.FC = () => {
           <button onClick={() => navigate('/')} className="back-button">
             ← Back to Home
           </button>
-          <h1>XRP/RLUSD Market Data</h1>
+          <h1>XRP/USD Market Data</h1>
         </div>
         <div className="error-message">
           {error}
@@ -251,10 +301,10 @@ const MarketData: React.FC = () => {
         <button onClick={() => navigate('/')} className="back-button">
           ← Back to Home
         </button>
-        <h1>XRP/RLUSD Market Data</h1>
+        <h1>XRP/USD Market Data</h1>
         {currentPrice && (
           <div className="current-price">
-            Current Price: {currentPrice.toFixed(6)} RLUSD per XRP
+            Current Price: {currentPrice.toFixed(6)} USD per XRP
           </div>
         )}
       </div>
@@ -265,9 +315,9 @@ const MarketData: React.FC = () => {
           <div className="order-book">
             <h2>Buy Orders (Bids)</h2>
             <div className="order-book-header">
-              <span>Price (RLUSD/XRP)</span>
+              <span>Price (USD/XRP)</span>
               <span>Amount (XRP)</span>
-              <span>Total (RLUSD)</span>
+              <span>Total (USD)</span>
             </div>
             <div className="order-book-body">
               {buyOffers.length > 0 ? (
@@ -288,8 +338,8 @@ const MarketData: React.FC = () => {
           <div className="order-book">
             <h2>Sell Orders (Asks)</h2>
             <div className="order-book-header">
-              <span>Price (RLUSD/XRP)</span>
-              <span>Amount (RLUSD)</span>
+              <span>Price (USD/XRP)</span>
+              <span>Amount (USD)</span>
               <span>Total (XRP)</span>
             </div>
             <div className="order-book-body">
@@ -336,7 +386,7 @@ const MarketData: React.FC = () => {
               >
                 book_offers API
               </a>
-              . It shows real-time order book data for the XRP/RLUSD trading pair.
+              . It shows real-time order book data for the XRP/USD trading pair.
             </p>
             <button onClick={fetchMarketData} className="refresh-button">
               Refresh Data
